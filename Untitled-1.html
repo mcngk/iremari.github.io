@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İrem Arı</title>
+    <script src="html5-qrcode.min.js"></script> <!-- Yerel kütüphane bağlantısı -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f9f9f9;
+        }
+        h1 {
+            color: #333;
+        }
+        #reader {
+            width: 500px;
+            margin: 500px auto;
+        }
+        #result {
+            margin-top: 200px;
+            font-size: 18px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <h1>İrem Arı</h1>
+    <div id="reader"></div>
+    <p id="result"></p>
+    <script>
+        const html5QrCode = new Html5Qrcode("reader");
+
+        function onScanSuccess(decodedText, decodedResult) {
+            // QR kod tarandıktan sonra çalışacak
+            console.log(`Kod İçeriği: ${decodedText}`);
+            document.getElementById("result").innerText = `Sonuç: ${decodedText}`;
+            html5QrCode.stop().then(() => {
+                console.log("Tarama durduruldu.");
+            }).catch(err => console.error(err));
+        }
+
+        // Kamera ayarları
+        html5QrCode.start(
+            { facingMode: "environment" }, // Arka kamera
+            {
+                fps: 10,  // Saniyedeki tarama sayısı
+                qrbox: { width: 1000, height: 1000 } // Tarama alanı
+            },
+            onScanSuccess
+        ).catch(err => {
+            console.error(`Başlatma Hatası: ${err}`);
+        });
+    </script>
+</body>
+</html>
