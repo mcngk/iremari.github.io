@@ -21,10 +21,11 @@
         }
         #reader {
             width: 500px;
-            margin: 500px auto;
+            margin: 20px auto;
+            display: block;
         }
         #result {
-            margin-top: 200px;
+            margin-top: 20px;
             font-size: 18px;
             color: #555;
         }
@@ -41,6 +42,14 @@
             // QR kod tarandıktan sonra çalışacak
             console.log(`Kod İçeriği: ${decodedText}`);
             document.getElementById("result").innerText = `Sonuç: ${decodedText}`;
+
+            // QR kod tarandıktan sonra sayfanın otomatik olarak temizlenmesi için
+            setTimeout(() => {
+                html5QrCode.clear(); // Tarayıcıyı temizle
+                document.getElementById("result").innerText = ""; // Sonuç alanını temizle
+            }, 2000); // 2 saniye sonra temizlenir
+
+            // Tarama durduruluyor
             html5QrCode.stop().then(() => {
                 console.log("Tarama durduruldu.");
             }).catch(err => console.error(err));
@@ -48,10 +57,10 @@
 
         // Kamera ayarları
         html5QrCode.start(
-            { facingMode: "environment" }, // Arka kamera
+            { facingMode: "user" }, // Ön kamera
             {
                 fps: 10,  // Saniyedeki tarama sayısı
-                qrbox: { width: 1000, height: 1000 } // Tarama alanı
+                qrbox: { width: 300, height: 300 } // Tarama alanı
             },
             onScanSuccess
         ).catch(err => {
